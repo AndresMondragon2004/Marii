@@ -1,0 +1,113 @@
+/* ── Estilos para el Modo Diario: Tu Rinconcito ♡ ── */
+
+.daily-home-screen {
+  min-height: 100dvh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--safe-top) + 12px) 14px calc(var(--safe-bottom) + 84px);
+  max-width: 480px;
+  margin: 0 auto;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.daily-center-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  width: 100%;
+  margin: auto 0;
+  box-sizing: border-box;
+}
+
+.daily-greeting-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 5vw, 1.7rem);
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.daily-greeting-sub {
+  color: var(--ink-soft);
+  font-size: clamp(0.85rem, 3.2vw, 0.95rem);
+  max-width: 32ch;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* ── Botonera Principal ── */
+.daily-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 350px;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+
+.quick-action-card {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid var(--pink-soft);
+  border-radius: 18px;
+  padding: 10px 12px;
+  font-size: clamp(0.78rem, 3.2vw, 0.88rem);
+  font-weight: 700;
+  color: var(--ink);
+  box-shadow: 0 4px 12px rgba(232, 137, 173, 0.14);
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+  min-height: 48px;
+  box-sizing: border-box;
+}
+
+.quick-action-card:hover {
+  border-color: var(--pink-strong);
+}
+
+.quick-action-card.full-width {
+  grid-column: span 2;
+  justify-content: center;
+}
+
+/* ── Backdrop para los modales del Rinconcito ── */
+.daily-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(93, 75, 85, 0.42);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 360px) {
+  .daily-quick-grid {
+    gap: 6px;
+  }
+  .quick-action-card {
+    padding: 8px 10px;
+    font-size: 0.76rem;
+  }
+  .daily-modal-overlay {
+    padding: 8px;
+  }
+}
+

@@ -1,0 +1,316 @@
+/* ── Escena general ─────────────────────────────── */
+.birthday-screen {
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden; /* sin scroll innecesario; las partículas viven dentro */
+}
+
+.scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  flex: 1;
+}
+
+/* ── Decoración flotante ────────────────────────── */
+.floating-decor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.floating-decor__item {
+  position: absolute;
+}
+
+/* ── Textos de escena ───────────────────────────── */
+.welcome-lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-height: 132px; /* reserva espacio: los textos aparecen sin mover el layout */
+  justify-content: center;
+  z-index: 1;
+}
+
+.welcome-line,
+.message-line {
+  font-size: 1.05rem;
+  max-width: 30ch;
+}
+
+.message-line.subtitle {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+/* ── Bienvenida: conejita + cajita mini ─────────── */
+.welcome-pair {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+/* ── Cajita de regalo ───────────────────────────── */
+.giftbox-zone {
+  position: relative;
+  z-index: 1;
+}
+
+.giftbox {
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 24px;
+}
+
+.giftbox:focus-visible,
+.cake-zone:focus-visible,
+.cozy-btn:focus-visible,
+.mic-link:focus-visible,
+.savepoint:focus-visible {
+  outline: 3px solid var(--pink-strong);
+  outline-offset: 3px;
+}
+
+/* ── Velita ─────────────────────────────────────── */
+.cake-zone {
+  position: relative;
+  z-index: 1;
+  border-radius: 28px;
+  padding: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.taps-hint {
+  position: absolute;
+  top: -6px;
+  right: 8px;
+  font-size: 1.2rem;
+  color: var(--pink-strong);
+  letter-spacing: 0.2em;
+}
+
+.candle-glow {
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 241, 220, 0.55) 0%, transparent 65%);
+  pointer-events: none;
+  animation: glow-calm 2.4s ease-in-out infinite;
+}
+
+@keyframes glow-calm {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ── Botón cozy ─────────────────────────────────── */
+.cozy-btn {
+  background: var(--pink-strong);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 13px 30px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
+  min-height: 44px; /* target táctil */
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cozy-btn:disabled {
+  opacity: 0.55;
+}
+
+.mic-link {
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+  text-decoration: underline dotted;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ── Partículas suaves ──────────────────────────── */
+.sparkle-burst {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.sparkle-burst__spark {
+  position: absolute;
+  translate: -50% -50%;
+  line-height: 1;
+}
+
+.gentle-particles {
+  position: fixed;
+  left: 50%;
+  bottom: 18%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gentle-particles span {
+  position: absolute;
+  translate: -50%;
+  color: var(--pink);
+  font-size: 1.1rem;
+}
+
+/* ── Burbuja de diálogo de la conejita ───────────── */
+.speech-bubble {
+  position: relative;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid var(--pink-soft);
+  border-radius: 22px;
+  padding: 16px 22px;
+  box-shadow: 0 12px 32px rgba(232, 137, 173, 0.22);
+  max-width: 330px;
+  margin: 6px auto 10px;
+  z-index: 2;
+  text-align: center;
+}
+
+.speech-bubble__tail {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 10px solid var(--pink-soft);
+}
+
+.speech-bubble__tail::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: -7px;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 8px solid #fff;
+}
+
+.speech-bubble__badge {
+  position: absolute;
+  top: -12px;
+  right: -8px;
+  font-size: 1.25rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(232, 137, 173, 0.3));
+}
+
+.speech-bubble__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Conejita interactiva ───────────────────────── */
+.bunny-interactive {
+  outline: none;
+  border-radius: 40px;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bunny-interactive:focus-visible {
+  outline: 3px solid var(--pink-strong);
+  outline-offset: 6px;
+}
+
+/* ── Chispitas de clic/toque en pantalla ───────── */
+.click-sparkles-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.click-sparkle {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  translate: -50% -50%;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(232, 137, 173, 0.4));
+}
+
+/* ── SavePoint ──────────────────────────────────── */
+.savepoint {
+  position: fixed;
+  top: calc(var(--safe-top) + 10px);
+  right: 12px;
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  padding: 8px 14px;
+  min-height: 44px;
+  z-index: 5;
+}
+
+/* ── Estilos de Tarjetas / Modales y Scrollbars Específicos ── */
+.gift-modal-screen {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pink-soft) transparent;
+  scroll-behavior: smooth;
+}
+
+.gift-modal-screen::-webkit-scrollbar {
+  width: 5px;
+}
+
+.gift-modal-screen::-webkit-scrollbar-thumb {
+  background: rgba(248, 200, 220, 0.85);
+  border-radius: 999px;
+}
+
+.gift-modal-screen::-webkit-scrollbar-thumb:hover {
+  background: var(--pink-strong);
+}
+
+/* Modo noche para el Regalo 3 */
+.night-mode-card {
+  scrollbar-color: rgba(221, 210, 243, 0.4) transparent;
+}
+
+.night-mode-card::-webkit-scrollbar-thumb {
+  background: rgba(221, 210, 243, 0.4);
+}
+
+.night-mode-card::-webkit-scrollbar-thumb:hover {
+  background: rgba(221, 210, 243, 0.85);
+}
+
+/* Área de scroll de la carta */
+.letter-scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pink-soft) transparent;
+  scroll-behavior: smooth;
+}
+
+.letter-scroll-area::-webkit-scrollbar {
+  width: 4px;
+}
+
+.letter-scroll-area::-webkit-scrollbar-thumb {
+  background: var(--pink-soft);
+  border-radius: 999px;
+}

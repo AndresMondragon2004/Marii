@@ -1,0 +1,37 @@
+:root {
+  /* ── Paleta ─────────────────────────────── */
+  --bg: #fff8fc;
+  --cream: #fff1dc;
+  --pink-soft: #f8c8dc;
+  --pink: #f4afc8;
+  --pink-strong: #e889ad;
+  --lilac: #ddd2f3;
+  --mint: #cde8d0;
+  --ink: #5d4b55;
+  --ink-soft: rgba(93, 75, 85, 0.62);
+  --ink-faint: rgba(93, 75, 85, 0.38);
+
+  /* ── Tipografía ─────────────────────────── */
+  --font-display: 'Cherry Bomb One', 'Quicksand', system-ui, sans-serif;
+  --font-body: 'Quicksand', system-ui, sans-serif;
+
+  /* ── Formas ─────────────────────────────── */
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+
+  /* ── Sombras esponjosas ─────────────────── */
+  --shadow-soft: 0 10px 30px rgba(232, 137, 173, 0.18);
+  --shadow-lift: 0 16px 40px rgba(232, 137, 173, 0.28);
+
+  /* ── Layout ─────────────────────────────── */
+  --content-max: 420px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-scale: 1;
+  }
+}

@@ -1,0 +1,123 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-y: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--pink-soft) transparent;
+}
+
+/* ── Scrollbars bonitas y sutiles (Coquette Style) ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pink-soft);
+  border-radius: 999px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pink-strong);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* Columna central pensada para móvil */
+.screen {
+  min-height: 100dvh;
+  padding: calc(var(--safe-top) + 24px) 20px calc(var(--safe-bottom) + 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.title-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+
+.subtitle {
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+/* Tarjetita cozy genérica */
+.card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-soft);
+  width: 100%;
+}
+
+/* Fondo decorativo: burbujas pastel muy sutiles */
+.cozy-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(340px 340px at 12% 8%, var(--pink-soft) 0%, transparent 70%),
+    radial-gradient(300px 300px at 88% 16%, var(--lilac) 0%, transparent 70%),
+    radial-gradient(320px 320px at 80% 92%, var(--mint) 0%, transparent 72%),
+    radial-gradient(280px 280px at 10% 90%, var(--cream) 0%, transparent 72%),
+    var(--bg);
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
