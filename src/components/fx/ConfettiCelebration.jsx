@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 
-const COLORS = ['#E889AD', '#F4AFC8', '#F8C8DC', '#DDD2F3', '#FFF1DC', '#CDE8D0', '#FFD166']
+const COLORS = ['#E889AD', '#F4AFC8', '#F8C8DC', '#DDD2F3', '#FFF1DC', '#FFD166']
 const SHAPES = ['rect', 'circle', 'heart', 'star', 'sparkle']
 
-export default function ConfettiCelebration({ active = false, count = 56 }) {
+export default function ConfettiCelebration({ active = false, count = 28 }) {
   const reduced = useReducedMotion()
   const [pieces, setPieces] = useState([])
 
@@ -15,21 +15,19 @@ export default function ConfettiCelebration({ active = false, count = 56 }) {
     }
 
     const items = Array.from({ length: count }, (_, i) => {
-      const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5
-      const distance = 90 + Math.random() * 260
+      const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4
+      const distance = 80 + Math.random() * 200
       return {
         id: i,
         shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
         color: COLORS[Math.floor(Math.random() * COLORS.length)],
-        size: 9 + Math.random() * 14,
-        // Burst physics
+        size: 9 + Math.random() * 12,
         startX: Math.cos(angle) * distance,
-        startY: Math.sin(angle) * distance * 0.7 - 60,
-        // Fall physics
-        endY: 320 + Math.random() * 300,
-        rotate: Math.random() * 720 - 360,
-        delay: Math.random() * 0.3,
-        duration: 2.6 + Math.random() * 1.4
+        startY: Math.sin(angle) * distance * 0.7 - 50,
+        endY: 280 + Math.random() * 240,
+        rotate: Math.random() * 360 - 180,
+        delay: Math.random() * 0.2,
+        duration: 2.2 + Math.random() * 1.0
       }
     })
 
@@ -48,7 +46,8 @@ export default function ConfettiCelebration({ active = false, count = 56 }) {
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        transform: 'translateZ(0)'
       }}
       aria-hidden="true"
     >
@@ -58,22 +57,22 @@ export default function ConfettiCelebration({ active = false, count = 56 }) {
           style={{
             position: 'absolute',
             width: p.size,
-            height: p.shape === 'rect' ? p.size * 1.6 : p.size,
+            height: p.shape === 'rect' ? p.size * 1.5 : p.size,
             backgroundColor: p.shape === 'heart' || p.shape === 'star' || p.shape === 'sparkle' ? 'transparent' : p.color,
             borderRadius: p.shape === 'circle' ? '50%' : p.shape === 'rect' ? '2px' : '0',
             color: p.color,
-            fontSize: `${p.size * 1.3}px`,
+            fontSize: `${p.size * 1.2}px`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            textShadow: '0 0 4px rgba(255,255,255,0.8)'
+            willChange: 'transform, opacity'
           }}
           initial={{ opacity: 0, x: 0, y: 0, scale: 0.2, rotate: 0 }}
           animate={{
             opacity: [0, 1, 1, 0],
-            x: [0, p.startX, p.startX * 1.25 + (p.id % 2 === 0 ? 35 : -35)],
+            x: [0, p.startX, p.startX * 1.2],
             y: [0, p.startY, p.endY],
-            scale: [0.2, 1.3, 1.05, 0.7],
+            scale: [0.2, 1.2, 1.0, 0.8],
             rotate: [0, p.rotate * 0.5, p.rotate]
           }}
           transition={{

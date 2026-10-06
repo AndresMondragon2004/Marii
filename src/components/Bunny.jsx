@@ -132,7 +132,7 @@ export default function Bunny({
           ? { duration: 0.6, ease: 'easeOut' }
           : { duration: 3.4, repeat: Infinity, ease: 'easeInOut' }
       }
-      style={{ lineHeight: 0, cursor: 'pointer', display: 'inline-block' }}
+      style={{ lineHeight: 0, cursor: 'pointer', display: 'inline-block', transform: 'translateZ(0)', willChange: 'transform' }}
     >
       <svg viewBox="0 0 200 210" width={width} role="img" aria-label="conejita">
         {/* oreja izquierda (se menea sola de vez en cuando o al acariciar) */}

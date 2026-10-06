@@ -1,39 +1,30 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { useReducedMotion } from 'framer-motion'
 
 const HEART = 'M12 21s-7.5-4.7-9.7-9C0.6 8 2.6 4 6.5 4c2.3 0 3.9 1.3 5.5 3.4C13.6 5.3 15.2 4 17.5 4 21.4 4 23.4 8 21.7 12c-2.2 4.3-9.7 9-9.7 9z'
 
 const ITEMS = [
-  { kind: 'cloud', x: '6%', y: '10%', size: 64, dur: 34, delay: 0 },
-  { kind: 'cloud', x: '72%', y: '20%', size: 48, dur: 42, delay: 6 },
-  { kind: 'star', x: '10%', y: '30%', size: 14, dur: 4.6, delay: 0.4 },
-  { kind: 'star', x: '87%', y: '42%', size: 11, dur: 5.4, delay: 1.6 },
-  { kind: 'star', x: '16%', y: '72%', size: 12, dur: 5, delay: 2.4 },
-  { kind: 'heart', x: '85%', y: '76%', size: 15, dur: 4.4, delay: 0.9 },
-  { kind: 'heart', x: '78%', y: '8%', size: 13, dur: 5.2, delay: 2 },
+  { kind: 'cloud', x: '6%', y: '10%', size: 56, dur: '28s', delay: '0s' },
+  { kind: 'cloud', x: '72%', y: '18%', size: 44, dur: '34s', delay: '4s' },
+  { kind: 'star', x: '10%', y: '30%', size: 13, dur: '4.5s', delay: '0.4s' },
+  { kind: 'star', x: '87%', y: '42%', size: 11, dur: '5.2s', delay: '1.6s' },
+  { kind: 'heart', x: '85%', y: '74%', size: 14, dur: '4.8s', delay: '0.9s' },
+  { kind: 'heart', x: '78%', y: '8%', size: 12, dur: '5.5s', delay: '2s' },
 ]
 
 /**
- * Decoración flotante muy sutil: nubecitas lentas de fondo y unos pocos
- * brillitos (máx. 5 elementos en movimiento). Con `prefers-reduced-motion`
- * quedan estáticos y semitransparentes. Puro CSS/SVG, cero imágenes.
+ * Decoración flotante ultra-ligera basada en CSS GPU.
+ * 0% de uso de CPU de JavaScript durante la navegación.
  */
 export default function FloatingDecor() {
   const reduced = useReducedMotion()
 
   return (
-    <div className="floating-decor" aria-hidden="true">
+    <div className="floating-decor" aria-hidden="true" style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
       {ITEMS.map((item, i) => {
-        const float = reduced
-          ? undefined
-          : { y: [0, -8, 0], opacity: [0.5, 0.85, 0.5] }
-        const transition = reduced
-          ? undefined
-          : { duration: item.dur, delay: item.delay, repeat: Infinity, ease: 'easeInOut' }
-
         let shape = null
         if (item.kind === 'cloud') {
           shape = (
-            <svg viewBox="0 0 64 40" width={item.size} style={{ opacity: 0.75 }}>
+            <svg viewBox="0 0 64 40" width={item.size} style={{ opacity: 0.65 }}>
               <g fill="#DDD2F3">
                 <circle cx="20" cy="24" r="12" />
                 <circle cx="34" cy="18" r="14" />
@@ -57,15 +48,22 @@ export default function FloatingDecor() {
         }
 
         return (
-          <motion.div
+          <div
             key={i}
             className="floating-decor__item"
-            style={{ left: item.x, top: item.y }}
-            animate={float}
-            transition={transition}
+            style={{
+              position: 'absolute',
+              left: item.x,
+              top: item.y,
+              transform: 'translateZ(0)',
+              willChange: 'transform, opacity',
+              animation: reduced ? 'none' : `float-gentle ${item.dur} ease-in-out infinite`,
+              animationDelay: item.delay,
+              opacity: 0.75
+            }}
           >
             {shape}
-          </motion.div>
+          </div>
         )
       })}
     </div>

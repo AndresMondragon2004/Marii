@@ -98,18 +98,43 @@ button {
   width: 100%;
 }
 
-/* Fondo decorativo: burbujas pastel muy sutiles */
+/* Fondo decorativo: burbujas pastel suaves y ligeras para GPU */
 .cozy-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(340px 340px at 12% 8%, var(--pink-soft) 0%, transparent 70%),
-    radial-gradient(300px 300px at 88% 16%, var(--lilac) 0%, transparent 70%),
-    radial-gradient(320px 320px at 80% 92%, var(--mint) 0%, transparent 72%),
-    radial-gradient(280px 280px at 10% 90%, var(--cream) 0%, transparent 72%),
+    radial-gradient(400px 400px at 15% 10%, rgba(248, 200, 220, 0.45) 0%, transparent 70%),
+    radial-gradient(360px 360px at 85% 85%, rgba(221, 210, 243, 0.45) 0%, transparent 70%),
     var(--bg);
-  opacity: 0.55;
+  transform: translateZ(0);
+  pointer-events: none;
+}
+
+/* Animaciones CSS puras para el compositor GPU */
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@keyframes pulse-gentle {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale3d(0.92, 0.92, 1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale3d(1.15, 1.15, 1);
+  }
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,9 +1,9 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { useReducedMotion } from 'framer-motion'
 
 /**
- * Cielo dinámico visual y ligero para el Rinconcito Diario.
+ * Cielo dinámico visual y ultra-ligero para el Rinconcito Diario.
  * Cambia suavemente entre Amanecer, Día, Atardecer y Noche según la hora de CDMX.
- * 100% CSS + SVG (cero librerías pesadas).
+ * 100% CSS + SVG estático (0% carga de JS en animaciones).
  */
 export default function DynamicSky({ period = 'day' }) {
   const reduced = useReducedMotion()
@@ -17,7 +17,8 @@ export default function DynamicSky({ period = 'day' }) {
         zIndex: 0,
         pointerEvents: 'none',
         overflow: 'hidden',
-        transition: 'background 1.5s ease'
+        transition: 'background 1.5s ease',
+        transform: 'translateZ(0)'
       }}
       aria-hidden="true"
     >
@@ -108,19 +109,19 @@ export default function DynamicSky({ period = 'day' }) {
         </svg>
       )}
 
-      {/* Estrellitas para la noche */}
+      {/* Estrellitas para la noche optimizadas con CSS */}
       {period === 'night' && !reduced && (
         <div style={{ position: 'absolute', inset: 0 }}>
           {[
-            { top: '15%', left: '20%', s: 3, d: 3.5 },
-            { top: '25%', left: '60%', s: 4, d: 4.2 },
-            { top: '10%', left: '45%', s: 2.5, d: 2.8 },
-            { top: '35%', left: '12%', s: 3.5, d: 4.8 },
-            { top: '40%', left: '85%', s: 3, d: 3.2 },
-            { top: '65%', left: '30%', s: 3, d: 5.0 },
-            { top: '75%', left: '75%', s: 3.5, d: 3.8 }
+            { top: '15%', left: '20%', s: 3, d: '3.5s' },
+            { top: '25%', left: '60%', s: 4, d: '4.2s' },
+            { top: '10%', left: '45%', s: 2.5, d: '2.8s' },
+            { top: '35%', left: '12%', s: 3.5, d: '4.8s' },
+            { top: '40%', left: '85%', s: 3, d: '3.2s' },
+            { top: '65%', left: '30%', s: 3, d: '5.0s' },
+            { top: '75%', left: '75%', s: 3.5, d: '3.8s' }
           ].map((st, i) => (
-            <motion.div
+            <div
               key={i}
               style={{
                 position: 'absolute',
@@ -130,45 +131,37 @@ export default function DynamicSky({ period = 'day' }) {
                 height: st.s,
                 backgroundColor: '#FFF1DC',
                 borderRadius: '50%',
-                boxShadow: '0 0 6px #FFF1DC'
+                boxShadow: '0 0 4px #FFF1DC',
+                animation: `pulse-gentle ${st.d} ease-in-out infinite`,
+                transform: 'translateZ(0)',
+                willChange: 'transform, opacity'
               }}
-              animate={{ opacity: [0.2, 0.9, 0.2], scale: [0.9, 1.25, 0.9] }}
-              transition={{ duration: st.d, repeat: Infinity, ease: 'easeInOut' }}
             />
           ))}
         </div>
       )}
 
-      {/* Nubes esponjosas flotantes para Amanecer/Día/Atardecer */}
+      {/* Nubes flotantes suaves para Amanecer/Día/Atardecer con CSS */}
       {period !== 'night' && !reduced && (
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.45 }}>
-          <motion.svg
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.35, pointerEvents: 'none' }}>
+          <svg
             viewBox="0 0 120 60"
-            width="130"
-            style={{ position: 'absolute', top: '14%', left: '8%' }}
-            animate={{ x: [0, 25, 0] }}
-            transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
+            width="120"
+            style={{
+              position: 'absolute',
+              top: '14%',
+              left: '8%',
+              animation: 'float-gentle 14s ease-in-out infinite',
+              transform: 'translateZ(0)',
+              willChange: 'transform'
+            }}
           >
             <path
               d="M20,45 a15,15 0 0,1 0,-30 a20,20 0 0,1 35,-5 a25,25 0 0,1 40,10 a18,18 0 0,1 0,25 z"
               fill="#FFFFFF"
               opacity="0.8"
             />
-          </motion.svg>
-
-          <motion.svg
-            viewBox="0 0 120 60"
-            width="100"
-            style={{ position: 'absolute', top: '28%', right: '10%' }}
-            animate={{ x: [0, -20, 0] }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <path
-              d="M20,45 a15,15 0 0,1 0,-30 a20,20 0 0,1 35,-5 a25,25 0 0,1 40,10 a18,18 0 0,1 0,25 z"
-              fill="#FFFFFF"
-              opacity="0.7"
-            />
-          </motion.svg>
+          </svg>
         </div>
       )}
     </div>

@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 
 /**
- * Sistema de fuegos artificiales suaves + escritura mágica de "Mari ♡" en el cielo nocturno.
- * Permite interactuar tocando el cielo para lanzar chispitas y fuegos adicionales.
+ * Sistema de fuegos artificiales optimizado para móvil + nombre "Mari ♡" en el cielo nocturno.
+ * Eliminadas operaciones costosas de canvas como shadowBlur para garantizar 60fps sólidos en celular.
  */
 export default function FireworksShow({ onReady }) {
   const canvasRef = useRef(null)
@@ -11,11 +11,10 @@ export default function FireworksShow({ onReady }) {
   const reduced = useReducedMotion()
 
   useEffect(() => {
-    // El nombre "Mari ♡" aparece mágicamente en el cielo tras unos fuegos iniciales
     const t = setTimeout(() => {
       setShowName(true)
       if (onReady) onReady()
-    }, 2400)
+    }, 2000)
     return () => clearTimeout(t)
   }, [onReady])
 
@@ -25,26 +24,26 @@ export default function FireworksShow({ onReady }) {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     let animationFrameId
-    let width = (canvas.width = canvas.offsetWidth || 360)
-    let height = (canvas.height = canvas.offsetHeight || 220)
+    let width = (canvas.width = canvas.offsetWidth || 340)
+    let height = (canvas.height = canvas.offsetHeight || 190)
 
     const handleResize = () => {
       if (!canvas) return
-      width = canvas.width = canvas.offsetWidth || 360
-      height = canvas.height = canvas.offsetHeight || 220
+      width = canvas.width = canvas.offsetWidth || 340
+      height = canvas.height = canvas.offsetHeight || 190
     }
     window.addEventListener('resize', handleResize)
 
-    const colors = ['#E889AD', '#F4AFC8', '#DDD2F3', '#FFF1DC', '#FFD166', '#CDE8D0', '#FFF']
+    const colors = ['#E889AD', '#F4AFC8', '#DDD2F3', '#FFF1DC', '#FFD166', '#CDE8D0', '#FFFFFF']
     const particles = []
     const rockets = []
 
     class Rocket {
       constructor(targetX, targetY) {
         this.x = targetX ?? width * (0.25 + Math.random() * 0.5)
-        this.y = height + 10
+        this.y = height + 8
         this.targetY = targetY ?? height * (0.18 + Math.random() * 0.32)
-        this.vy = -(4.5 + Math.random() * 2.5)
+        this.vy = -(4.2 + Math.random() * 2.2)
         this.color = colors[Math.floor(Math.random() * colors.length)]
         this.alive = true
       }
@@ -58,10 +57,10 @@ export default function FireworksShow({ onReady }) {
       draw(c) {
         c.save()
         c.strokeStyle = this.color
-        c.lineWidth = 2.5
+        c.lineWidth = 2
         c.beginPath()
         c.moveTo(this.x, this.y)
-        c.lineTo(this.x, this.y + 12)
+        c.lineTo(this.x, this.y + 10)
         c.stroke()
         c.restore()
       }
@@ -73,13 +72,13 @@ export default function FireworksShow({ onReady }) {
         this.y = y
         this.color = color
         const angle = Math.random() * Math.PI * 2
-        const speed = 1.2 + Math.random() * 3.8
+        const speed = 1.0 + Math.random() * 2.8
         this.vx = Math.cos(angle) * speed
         this.vy = Math.sin(angle) * speed
         this.alpha = 1
-        this.decay = 0.015 + Math.random() * 0.02
-        this.size = 2 + Math.random() * 2.5
-        this.gravity = 0.045
+        this.decay = 0.02 + Math.random() * 0.02
+        this.size = 1.8 + Math.random() * 1.5
+        this.gravity = 0.04
       }
       update() {
         this.x += this.vx
@@ -92,8 +91,6 @@ export default function FireworksShow({ onReady }) {
         c.save()
         c.globalAlpha = Math.max(0, this.alpha)
         c.fillStyle = this.color
-        c.shadowColor = this.color
-        c.shadowBlur = 6
         c.beginPath()
         c.arc(this.x, this.y, this.size, 0, Math.PI * 2)
         c.fill()
@@ -102,25 +99,23 @@ export default function FireworksShow({ onReady }) {
     }
 
     function explode(x, y, baseColor) {
-      const count = 32 + Math.floor(Math.random() * 18)
+      const count = 16 + Math.floor(Math.random() * 8)
       for (let i = 0; i < count; i++) {
         const color = Math.random() > 0.3 ? baseColor : colors[Math.floor(Math.random() * colors.length)]
         particles.push(new Particle(x, y, color))
       }
     }
 
-    // Fuegos iniciales
+    // Fuegos iniciales suaves
     rockets.push(new Rocket(width * 0.35, height * 0.3))
-    setTimeout(() => rockets.push(new Rocket(width * 0.68, height * 0.25)), 600)
-    setTimeout(() => rockets.push(new Rocket(width * 0.5, height * 0.38)), 1400)
+    setTimeout(() => rockets.push(new Rocket(width * 0.65, height * 0.25)), 500)
 
     let lastAutoRocket = Date.now()
 
     const loop = () => {
       ctx.clearRect(0, 0, width, height)
 
-      // Lanzar cohetes periódicos suaves
-      if (Date.now() - lastAutoRocket > 3400 && rockets.length < 2) {
+      if (Date.now() - lastAutoRocket > 3600 && rockets.length < 2) {
         rockets.push(new Rocket())
         lastAutoRocket = Date.now()
       }
@@ -162,13 +157,14 @@ export default function FireworksShow({ onReady }) {
       style={{
         position: 'relative',
         width: '100%',
-        height: '170px',
-        borderRadius: '20px',
+        height: '160px',
+        borderRadius: '18px',
         overflow: 'hidden',
         background: 'linear-gradient(180deg, #161224 0%, #241A33 100%)',
         border: '2px solid rgba(221, 210, 243, 0.35)',
-        boxShadow: 'inset 0 0 20px rgba(0,0,0,0.4), 0 4px 16px rgba(221, 210, 243, 0.2)',
-        cursor: 'pointer'
+        boxShadow: '0 4px 16px rgba(18, 14, 26, 0.35)',
+        cursor: 'pointer',
+        transform: 'translateZ(0)'
       }}
       title="Toca el cielo para encender más fuegos artificiales ✨"
     >
@@ -183,17 +179,13 @@ export default function FireworksShow({ onReady }) {
         }}
       />
 
-      {/* Nombre "✨ Mari ♡ ✨" escrito en el cielo con chispitas doradas/rosadas */}
+      {/* Nombre "✨ Mari ♡ ✨" escrito en el cielo */}
       {showName && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.75, filter: 'blur(4px)' }}
-          animate={{
-            opacity: 1,
-            scale: [1, 1.04, 1],
-            filter: 'blur(0px)'
-          }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: [1, 1.03, 1] }}
           transition={{
-            opacity: { duration: 1.4, ease: 'easeOut' },
+            opacity: { duration: 1.0, ease: 'easeOut' },
             scale: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' }
           }}
           style={{
@@ -210,16 +202,15 @@ export default function FireworksShow({ onReady }) {
           <div
             style={{
               fontFamily: "'Quicksand', 'Nunito', system-ui, sans-serif",
-              fontSize: '2.3rem',
+              fontSize: '2.1rem',
               fontWeight: 800,
               background: 'linear-gradient(135deg, #FFFDF9 0%, #FFF1DC 30%, #F4AFC8 70%, #E889AD 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 0 12px rgba(232, 137, 173, 0.85)) drop-shadow(0 0 24px rgba(255, 241, 220, 0.7))',
-              letterSpacing: '0.08em',
+              letterSpacing: '0.06em',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.4rem'
+              gap: '0.35rem'
             }}
           >
             <span>✨</span>
@@ -228,13 +219,12 @@ export default function FireworksShow({ onReady }) {
           </div>
           <span
             style={{
-              fontSize: '0.75rem',
+              fontSize: '0.74rem',
               color: '#DDD2F3',
-              letterSpacing: '0.15em',
+              letterSpacing: '0.12em',
               textTransform: 'uppercase',
               opacity: 0.85,
-              marginTop: '-2px',
-              textShadow: '0 0 8px rgba(221, 210, 243, 0.6)'
+              marginTop: '-2px'
             }}
           >
             brillas más que todo el cielo
@@ -246,10 +236,10 @@ export default function FireworksShow({ onReady }) {
       <div
         style={{
           position: 'absolute',
-          bottom: '6px',
-          right: '10px',
-          fontSize: '0.68rem',
-          color: 'rgba(255, 241, 220, 0.65)',
+          bottom: '5px',
+          right: '8px',
+          fontSize: '0.66rem',
+          color: 'rgba(255, 241, 220, 0.6)',
           fontStyle: 'italic',
           pointerEvents: 'none'
         }}
